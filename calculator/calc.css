@@ -2,20 +2,24 @@
 sup{
     font-size:50%;
 }
+
 .calc{
     width: 200px;
     margin:0 auto;
 }
-table{
+
+.calc table{
     width: 100%;
     text-align: center;
     border-spacing: 5px;
 }
-[data-com],
-[data-op]{
+
+.calc [data-com],
+.calc [data-op]{
     background: linear-gradient(to top, rgba(182, 204, 222,1) 1%,rgba(255,255,255,1) 80%);
 }
-table td{
+
+.calc table td{
     padding:5px;
     cursor: pointer;
     border-radius: 2px;
@@ -26,16 +30,19 @@ table td{
     background: linear-gradient(to top, rgba(222,239,247,1) 1%,rgba(255,255,255,1) 80%);
     transition:all 1s;
 }
-table td:hover {
+
+.calc table td:hover{
     background: linear-gradient(to bottom, rgba(254,252,234,1) 0%,rgba(255,240,142,1) 48%,rgba(255,227,17,1) 50%,rgba(244,231,173,1) 87%,rgba(252,252,252,1) 100%);
     border:1px solid #EAD81A;
 }
+
 .pre-result{
     font-size:14px;
     font-style:italic;
     height:16px;
 }
-.screen {
+
+.screen{
     margin: 0 5px;
     height:45px;
     border-radius: 2px;
@@ -43,11 +50,13 @@ table td:hover {
     box-shadow: inset 0 0 1px 1px white;
     background: linear-gradient(to bottom, rgba(222,239,247,1) 1%,rgba(255,255,255,1) 80%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
 }
-.screen > div {
+
+.screen > div{
     text-align: right;
     width:100%;
 
 }
+
 .current{
     height: 40px;
     max-height:45px;

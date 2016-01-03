@@ -1,11 +1,13 @@
 'use strict';
-const INPUT =1;
-const STABLE =2;
+
+const INPUT = 1;
+const STABLE = 2;
 const INPUT_FLOAT = 3;
 const MAX_DIGITS = 14;
+
 class Calc {
-  constructor(selector){
-    this.elem = document.querySelector(selector);
+  constructor(elem) {
+    this.elem = elem;
     this.currentValue = '0';
     this.previousResult = '';
     this.currentOp = '';
@@ -15,10 +17,9 @@ class Calc {
     this.state = STABLE;
 
     this.elem.addEventListener('click', this.onButtonClick.bind(this))
-
   }
 
-  exec (command) {
+  exec(command) {
     switch (command) {
       case '=':
         this.makeOp();
@@ -51,8 +52,9 @@ class Calc {
   }
 
   makeOp() {
-    var stored = parseFloat(this.previousResult, 10);
-    var current = parseFloat(this.currentValue, 10);
+    let stored = parseFloat(this.previousResult, 10);
+    let current = parseFloat(this.currentValue, 10);
+
     switch (this.currentOp) {
       case '-':
         this.previousResult = stored - current;
@@ -78,7 +80,7 @@ class Calc {
 
   render() {
     if (this.currentValue.length > MAX_DIGITS) {
-      if( !~this.currentValue.indexOf('.')){
+      if (this.currentValue.indexOf('.') !== -1) {
         this.exec('clear');
         this.currentValue = 'OVERFLOW';
         this.state = STABLE;
@@ -87,23 +89,22 @@ class Calc {
       }
     }
 
-    if (this.currentOp == '^')
+    if (this.currentOp === '^') {
       this.$previousOp.innerHTML = 'x<sup>y</sup>';
-    else if (this.currentOp == '!^')
+    } else if (this.currentOp === '!^') {
       this.$previousOp.innerHTML = '<sup>y</sup>&radic;x';
-    else
+    } else {
       this.$previousOp.innerHTML = this.currentOp;
-
+    }
     this.$previousResult.innerHTML = this.previousResult;
     this.$currentValue.innerHTML = this.currentValue;
   }
 
   onButtonClick(e) {
-    var button = e.target;
-
-// digit button pressed
-    if ('num' in button.dataset) {
-      var digit = button.dataset.num;
+    let button = e.target;
+    // digit button pressed
+    if (button.dataset.num) {
+      let digit = button.dataset.num;
       switch (this.state) {
         case INPUT:
         case INPUT_FLOAT:
@@ -115,8 +116,7 @@ class Calc {
         break;
       }
 // operation button pressed
-    } else if ('op' in button.dataset) {
-
+    } else if (button.dataset.op) {
       if (this.previousResult !== '') {
         this.makeOp();
       } else {
@@ -127,13 +127,12 @@ class Calc {
       this.currentValue = '0';
       this.state = STABLE;
 // command button pressed
-    } else if ('com' in button.dataset) {
+    } else if (button.dataset.com) {
       this.exec(button.dataset.com);
     }
-
     this.render();
   }
 }
 
-
-var calc = new Calc('.calc');
+let elCalc = document.querySelector('.calc');
+new Calc(elCalc);
