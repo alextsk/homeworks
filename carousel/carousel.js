@@ -59,13 +59,11 @@ class Carousel {
       this.speed = 10;
       this.root.style.transition = 'margin-left ' + this.speed * 0.1 +'s';
       leftButton.addEventListener('click', this.onLeftButton.bind(this));
-      leftButton.addEventListener('mouseenter', this.onLeftHover.bind(this));
-      leftButton.addEventListener('mouseleave', this.onLeave.bind(this));
-
       rightButton.addEventListener('click', this.onRightButton.bind(this));
-      rightButton.addEventListener('mouseenter', this.onRightHover.bind(this));
-      rightButton.addEventListener('mouseleave', this.onLeave.bind(this));
-      this.$controls = {$leftButton:leftButton, $rightButton: rightButton}
+
+
+      this.$controls = {$leftButton:leftButton, $rightButton: rightButton};
+
       this.wrapper.addEventListener('mouseenter', this.onHover.bind(this));
       this.wrapper.addEventListener('mouseleave', this.onHoverLeave.bind(this));
     }
@@ -95,29 +93,10 @@ class Carousel {
       this._moveRight(this.speed);
     }, 100);
   }
-
-  onLeftHover(e) {
-    this.moving = setInterval(() => {
-      this._moveLeft(this.speed);
-    }, 100);
-  }
-
-  onLeave(e) {
-    clearInterval(this.moving);
-    this._correctToIntegral()
-  }
-
   remove () {
     this.wrapper.remove();
   }
-  _correctToIntegral() {
-    let scrolledLeft = Math.abs(this.offset % this.elemWidth);
-    if (scrolledLeft <= this.elemWidth / 2) {
-      this._moveLeft(scrolledLeft);
-    } else {
-      this._moveRight(this.elemWidth - scrolledLeft);
-    }
-  }
+
 
   _moveRight(pixels){
     if( this._willOverflowRight(pixels))
