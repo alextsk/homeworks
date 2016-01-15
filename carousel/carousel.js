@@ -1,66 +1,161 @@
 'use strict';
-
+/*
+* accepts single reference to wrapper? which contains first-level children of equal width(!sic);
+* width of carousel and therefore number of visible aforementioned children are calculated
+* depending on the container's width and width's of children themselves
+*
+* it does not have opinion on styling, css props used in script are only used for layout
+*
+* */
 class Carousel {
   constructor(root) {
-    this.elements = root.children.length;
+    var big;
+    this.elements = root.children;
     this.root = root;
-    //hopefully all elements are alike (dimensionwise)
-    this.elemWidth = root.firstElementChild.offsetWidth;
-    this.elemsVisible = (root.offsetWidth / root.firstElementChild.offsetWidth) | 0;
-    //wrapper on the outside, cause putting wrapper between ul and it's children feels nonsemantic
-    this.outer = document.createElement('carousel');
-    this.outer.style.height = root.firstElementChild.offsetHeight + 'px';
-    this.outer.style.cssText =  'overflow:hidden;' +
-                                'display:block;' +
-                                'margin:0 auto;' +
-                                'position:relative';
-    //ul which we begun with - now it is inner element and it is going to slide
-    this.root.style.width = '9999px';
-    this.root.style.transition = 'margin-left 0.5s';
     this.offset = 0;
-    this.root.parentNode.insertBefore(this.outer, this.root);
-    this.outer.style.width = this.elemsVisible * root.firstElementChild.offsetWidth + 'px';
-    this.outer.appendChild(this.root);
+    this.root.style.paddingLeft = 0; // daddy knows best how to style his ul's, ok google?
 
-    // creating buttons from thin air, no html required
-    let leftButton = document.createElement('button');
-    leftButton.style.position = 'absolute';
-    let rightButton = leftButton.cloneNode(true);
-    leftButton.style.left = '0px';
-    rightButton.style.right = '0px';
-    leftButton.innerHTML = '⇦';
-    rightButton.innerHTML = '⇨';
-    this.outer.appendChild(leftButton);
-    this.outer.appendChild(rightButton);
-    leftButton.style.top = rightButton.style.top = (root.firstElementChild.offsetHeight / 2) - (leftButton.offsetHeight / 2) + 'px';
-    leftButton.className = rightButton.className = 'carousel__nav-button';
+    try {
+      this.elemWidth = this.root.firstElementChild.offsetWidth; // hopefully all elements are alike (dimensionwise)
+    } catch (e) {
+      throw Error('doesnt work with empty list');
+    }
 
-    leftButton.addEventListener('click', this.onLeftButton.bind(this));
-    rightButton.addEventListener('click', this.onRightButton.bind(this));
+    this.elemsVisible = (this.root.offsetWidth / this.root.firstElementChild.offsetWidth) | 0;
+    this.contentWidth =  this.elemWidth * this.elemsVisible;
+    this.fullWidth = this.elements.length * this.elemWidth;
+    if (this.fullWidth > this.contentWidth) big = true;
+
+    this.root.style.width =  this.fullWidth + 'px';
+    //wrapper on the outside, cause putting wrapper between ul and it's children feels nonsemantic
+    this.wrapper = document.createElement('carousel');
+    this.wrapper.style.height = root.firstElementChild.offsetHeight + 'px';
+    this.wrapper.style.cssText =  'overflow:hidden;' +
+                                  'display:block;' +
+                                  'margin:0 auto;' +
+                                  'position:relative;' +
+                                  'width: ' + (this.elemsVisible * this.elemWidth) + 'px;';
+    //ul which we begun with - now it is inner element and it is going to slide
+    this.root.parentNode.insertBefore(this.wrapper, this.root);
+    this.wrapper.appendChild(this.root);  // wrapping root into, well, wrapper
+
+    //if content smaller than container do not even bother creating controls
+    if (big) {
+      // creating buttons from thin air, no html required
+      let leftButton = document.createElement('button');
+      leftButton.style.position = 'absolute';
+      let rightButton = leftButton.cloneNode(true);
+      leftButton.style.left = '0px';
+      rightButton.style.right = '0px';
+      leftButton.innerHTML = '⇦';
+      rightButton.innerHTML = '⇨';
+      this.wrapper.appendChild(leftButton);
+      this.wrapper.appendChild(rightButton);
+      leftButton.style.top = rightButton.style.top = (root.firstElementChild.offsetHeight / 2) - (leftButton.offsetHeight / 2) + 'px';
+      leftButton.className = rightButton.className = 'carousel__nav-button';
+
+      //amimation hanging events
+      this.moving = 0;
+      this.speed = 10;
+      this.root.style.transition = 'margin-left ' + this.speed * 0.1 +'s';
+      leftButton.addEventListener('click', this.onLeftButton.bind(this));
+      leftButton.addEventListener('mouseenter', this.onLeftHover.bind(this));
+      leftButton.addEventListener('mouseleave', this.onLeave.bind(this));
+
+      rightButton.addEventListener('click', this.onRightButton.bind(this));
+      rightButton.addEventListener('mouseenter', this.onRightHover.bind(this));
+      rightButton.addEventListener('mouseleave', this.onLeave.bind(this));
+      this.$controls = {$leftButton:leftButton, $rightButton: rightButton}
+      this.wrapper.addEventListener('mouseenter', this.onHover.bind(this));
+      this.wrapper.addEventListener('mouseleave', this.onHoverLeave.bind(this));
+    }
   }
 
+  onHover() {
+    for ( let el in this.$controls) {
+      this.$controls[el].style.display = 'block';
+    }
+  }
+
+  onHoverLeave () {
+    for ( let el in this.$controls) {
+      this.$controls[el].style.display = 'none';
+    }
+  }
   onRightButton() {
-    // move right on elemsVisible or to the end of list
-    var offsetRight = this.elements * this.elemWidth  - Math.abs(this.offset) - this.elemWidth * this.elemsVisible;
-    if( offsetRight < this.elemsVisible * this.elemWidth)
-      this._animate(-offsetRight);
-    else
-      this._animate(-this.elemsVisible * this.elemWidth);
+      this._moveRight(this.elemsVisible * this.elemWidth);
   }
 
   onLeftButton() {
-    // move left on elemsVisible or to the beginning of list
-    if( this.offset + this.elemsVisible * this.elemWidth > 0 )
-      this._animate(-this.offset);
-    else
-      this._animate(this.elemsVisible * this.elemWidth);
+    this._moveLeft(this.elemsVisible * this.elemWidth);
+  }
+
+  onRightHover(e) {
+    this.moving = setInterval(() => {
+      this._moveRight(this.speed);
+    }, 100);
+  }
+
+  onLeftHover(e) {
+    this.moving = setInterval(() => {
+      this._moveLeft(this.speed);
+    }, 100);
+  }
+
+  onLeave(e) {
+    clearInterval(this.moving);
+    this._correctToIntegral()
+  }
+
+  remove () {
+    this.wrapper.remove();
+  }
+  _correctToIntegral() {
+    let scrolledLeft = Math.abs(this.offset % this.elemWidth);
+    if (scrolledLeft <= this.elemWidth / 2) {
+      this._moveLeft(scrolledLeft);
+    } else {
+      this._moveRight(this.elemWidth - scrolledLeft);
+    }
+  }
+
+  _moveRight(pixels){
+    if( this._willOverflowRight(pixels))
+      this._harbourRight();
+    else {
+      this._animate(-pixels);
+    }
+  }
+
+  _moveLeft(pixels){
+    if (this._willOverflowLeft(pixels))
+      this._harbourLeft();
+    else {
+      this._animate(pixels);
+    }
+  }
+
+  _willOverflowLeft(pixels) {
+    return this.offset + pixels > 0;
+  }
+
+  _willOverflowRight(pixels){
+    return Math.abs(this.offset) > this.fullWidth - this.contentWidth - pixels;
+  }
+
+  _harbourRight(){
+    this._animate(-(this.fullWidth - Math.abs(this.offset) - this.contentWidth));
+  }
+
+  _harbourLeft(){
+    this._animate(-this.offset);
   }
 
   _animate(pixels) {
     // moves container left or right on pixels(direction set by sign)
     // for now it just changes margin-left, and relies on css transform property being set on root element
-    this.offset = this.offset + pixels;
-    this.root.style.marginLeft = this.offset + 'px';
+      this.offset = this.offset + pixels;
+      this.root.style.marginLeft = this.offset + 'px';
   }
 }
 

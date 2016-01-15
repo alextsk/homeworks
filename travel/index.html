@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>JS 2015.11.24 19:30 travel calendar</title>
+    <link href="./travel.css" rel="stylesheet">
+</head>
+<body>
+<nav>
+    <a href="../index.html"> back </a>
+</nav>
+
+<form class="rangeForm center">
+    <label>
+        Start date:
+        <input type="date" name="start-date" value="2016-01-01">
+    </label>
+    <label>
+        End date:
+        <input type="date" name="end-date" value="2016-01-09">
+    </label>
+
+</form>
+
+<div id="travel-widget">
+
+    <div class="tree">
+        <ol>
+            <li class="categorie">
+                <span>Category name1</span>
+                <ul>
+                    <li>place1</li>
+                    <li>place2</li>
+                    <li>place3</li>
+                    <li>place4</li>
+                    <li>place5</li>
+                </ul>
+            </li>
+            <li class="categorie">
+                <span>Category name2</span>
+                <ul>
+                    <li>place6</li>
+                    <li>place7</li>
+                    <li>place8</li>
+
+                </ul>
+            </li>
+        </ol>
+
+    </div>
+    <div class="days">
+
+    </div>
+</div>
+
+
+<script src='../carousel/carousel.js'></script>
+<script src='./travel.js'></script>
+</body>
+</html>
