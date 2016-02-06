@@ -13,6 +13,7 @@ class Calendar extends Carousel {
         $day.style.cssText = 'width: ' + elemWidth + 'px;' +
         'float:left;' +
         'min-height:100px;';
+        $day.classList.add('dropzone');
         $day.innerHTML =  cursorDate.getDate() + '.' + (cursorDate.getMonth() + 1) + '.' + cursorDate.getFullYear();
         cursorDate.setDate(cursorDate.getDate() + 1);
         $carousel.appendChild($day);

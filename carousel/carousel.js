@@ -54,13 +54,12 @@ class Carousel {
       leftButton.style.top = rightButton.style.top = (root.firstElementChild.offsetHeight / 2) - (leftButton.offsetHeight / 2) + 'px';
       leftButton.className = rightButton.className = 'carousel__nav-button';
 
-      //amimation hanging events
+      //animation hanging events
       this.moving = 0;
       this.speed = 10;
       this.root.style.transition = 'margin-left ' + this.speed * 0.1 +'s';
       leftButton.addEventListener('click', this.onLeftButton.bind(this));
       rightButton.addEventListener('click', this.onRightButton.bind(this));
-
 
       this.$controls = {$leftButton:leftButton, $rightButton: rightButton};
 
@@ -80,6 +79,7 @@ class Carousel {
       this.$controls[el].style.display = 'none';
     }
   }
+
   onRightButton() {
       this._moveRight(this.elemsVisible * this.elemWidth);
   }
@@ -93,10 +93,10 @@ class Carousel {
       this._moveRight(this.speed);
     }, 100);
   }
+
   remove () {
     this.wrapper.remove();
   }
-
 
   _moveRight(pixels){
     if( this._willOverflowRight(pixels))
@@ -123,7 +123,7 @@ class Carousel {
   }
 
   _harbourRight(){
-    this._animate(-(this.fullWidth - Math.abs(this.offset) - this.contentWidth));
+    this._animate( -( this.fullWidth - Math.abs(this.offset) - this.contentWidth ));
   }
 
   _harbourLeft(){
@@ -138,7 +138,7 @@ class Carousel {
   }
 }
 
-window.onload = function(){
+window.onload = function() {
   let elCarousel = document.getElementsByClassName('carousel')[0];
   let objCarousel = new Carousel(elCarousel);
 };
