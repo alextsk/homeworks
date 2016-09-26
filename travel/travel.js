@@ -16,6 +16,7 @@ window.onload = function(){
 
   function getDaysRange(start, end){
     start = (startDate instanceof Date) ? start : new Date(start);
+    //??   endDate??
     end = (startDate instanceof Date) ? end : new Date(end);
     if (start > end) throw "won't create negative range";
     return (end.valueOf() - start.getTime()) /1000/60/60/24 |0 ;
