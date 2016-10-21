@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>JS 2015.11.24 19:30 travel calendar</title>
+    <link href="./travel.css" rel="stylesheet">
+</head>
+<body>
+<nav>
+    <a href="../index.html"> back </a>
+</nav>
+
+<form class="rangeForm center">
+    <label>
+        Start date:
+        <input type="date" name="start-date" value="2016-01-01">
+    </label>
+    <label>
+        End date:
+        <input type="date" name="end-date" value="2016-01-09">
+    </label>
+
+</form>
+
+<div id="travel-widget">
+
+    <div class="attractions">
+        <ul>
+            <li>
+                <h4>"Paris"</h4>
+                <ul>
+                    <li class="attraction">"Eiffel Tower"</li>
+                    <li class="attraction">"Notre damme de Paris"</li>
+                    <li class="attraction">"Moulin Rouge"</li>
+                </ul>
+            </li>
+            <li>
+                <h4>"New York"</h4>
+                <ul>
+                    <li class="attraction">"Statue of Liberty"</li>
+                    <li class="attraction">"NYPD"</li>
+                    <li class="attraction">"Manhattan"</li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+
+    <div class="days"> </div>
+</div>
+
+
+<script src='./build.js'></script>
+</body>
+</html>

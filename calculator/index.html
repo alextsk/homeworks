@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>JS 2015.11.24 19:30 calculator</title>
+    <link href="calc.css" rel="stylesheet">
+</head>
+<body>
+<nav>
+    <a href="../index.html"> back </a>
+</nav>
+  <div class="calc">
+
+    <div class="screen">
+      <div class="pre-result">
+        <span class="pre-result__number"></span>
+        <span class="pre-result__operation"></span>
+      </div>
+      <div class="current" >0</div>
+    </div>
+    <table>
+      <tbody>
+      <tr>
+          <td colspan="2" data-com="clear">Clear</td>
+          <td colspan="3" data-com="back">Backspace</td>
+      </tr>
+      <tr>
+        <td data-num='7'>7</td>
+        <td data-num='8'>8</td>
+        <td data-num='9'>9</td>
+        <td data-op='+'>+</td>
+        <td data-op='!^'><sup>y</sup>&radic;x</td>
+      </tr>
+      <tr>
+        <td data-num='4'>4</td>
+        <td data-num='5'>5</td>
+        <td data-num='6'>6</td>
+        <td data-op='-'>-</td>
+        <td data-op='^'>x<sup>y</sup></td>
+      </tr>
+      <tr>
+        <td data-num='1'>1</td>
+        <td data-num='2'>2</td>
+        <td data-num='3'>3</td>
+        <td data-op='*'>*</td>
+        <td rowspan="2" data-com='='>=</td>
+      </tr>
+      <tr>
+        <td colspan="2" data-num='0'>0</td>
+        <td data-com='.'>.</td>
+        <td data-op='/'>/</td>
+
+      </tr>
+      </tbody>
+    </table>
+
+  </div>
+
+
+  <script src='calc.js'></script>
+</body>
+</html>

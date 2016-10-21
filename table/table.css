@@ -1,0 +1,10 @@
+th{
+    cursor:pointer;
+}
+[sorted~="asc"]{
+    color:red;
+}
+
+[sorted~="desc"] {
+    color:green;
+}

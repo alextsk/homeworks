@@ -1,0 +1,46 @@
+ul,ol{
+    list-style: none;
+}
+#travel-widget{
+    display: flex;
+    width:700px;
+    justify-content: space-between;
+    margin:0 auto;
+}
+#travel-widget>div{
+    border: 1px solid red;
+}
+#travel-widget .days{
+    flex:2 1;
+    min-width:200px;
+}
+.carousel li{
+border:1px solid red;
+}
+#travel-widget .tree{
+    flex:1 1;
+}
+.day{
+    width: 100px;
+    float: left;
+    border: 1px solid green;
+}
+.rangeForm {
+    width:700px;
+}
+.center{
+    margin: 0 auto;
+}
+
+.carousel__nav-button {
+    border: 1px solid #ddd;
+    border-radius:50%;
+    background-color:rgba(255,255,255,0.4);
+    font-size:24px;
+    color:#999;
+    outline:none;
+}
+.carousel__nav-button:hover {
+    border-color:green;
+    color:green;
+}
