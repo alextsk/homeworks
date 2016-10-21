@@ -1,6 +1,6 @@
 'use strict';
-
-class Calendar extends Carousel {
+import Carousel from '../carousel/carousel.js';
+export default class Calendar extends Carousel {
     constructor (parent, startDate, elemsCount, elemWidth) {
       var $carousel;
       var $ul = document.createElement('ul');
@@ -21,10 +21,13 @@ class Calendar extends Carousel {
 
       super($carousel);
 
-      this.$controls.$leftButton.addEventListener('mouseenter', this.onLeftHover.bind(this));
-      this.$controls.$leftButton.addEventListener('mouseleave', this.onLeave.bind(this));
-      this.$controls.$rightButton.addEventListener('mouseenter', this.onRightHover.bind(this));
-      this.$controls.$rightButton.addEventListener('mouseleave', this.onLeave.bind(this));
+      if (this.$controls){
+        this.$controls.$leftButton.addEventListener('mouseenter', this.onLeftHover.bind(this));
+        this.$controls.$leftButton.addEventListener('mouseleave', this.onLeave.bind(this));
+        this.$controls.$rightButton.addEventListener('mouseenter', this.onRightHover.bind(this));
+        this.$controls.$rightButton.addEventListener('mouseleave', this.onLeave.bind(this));
+      }
+
     }
 
     onLeftHover(e) {
@@ -35,11 +38,12 @@ class Calendar extends Carousel {
 
     onLeave(e) {
       clearInterval(this.moving);
-      this._correctToIntegral()
+      this._correctToIntegral();
     }
 
     _correctToIntegral() {
       let scrolledLeft = Math.abs(this.offset % this.elemWidth);
+
       if (scrolledLeft <= this.elemWidth / 2) {
         this._moveLeft(scrolledLeft);
       } else {

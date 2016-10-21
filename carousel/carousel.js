@@ -1,13 +1,13 @@
 'use strict';
-/*
+/* *
 * accepts single reference to wrapper? which contains first-level children of equal width(!sic);
 * width of carousel and therefore number of visible aforementioned children are calculated
-* depending on the container's width and width's of children themselves
+* depending on the container's width and widths of children themselves
 *
-* it does not have opinion on styling, css props used in script are only used for layout
+* it does not have an opinion on styling, css props used in script are only used for layout
 *
 * */
-class Carousel {
+export default class Carousel {
   constructor(root) {
     var big;
     this.elements = root.children;
@@ -24,7 +24,8 @@ class Carousel {
     this.elemsVisible = (this.root.offsetWidth / this.root.firstElementChild.offsetWidth) | 0;
     this.contentWidth =  this.elemWidth * this.elemsVisible;
     this.fullWidth = this.elements.length * this.elemWidth;
-    if (this.fullWidth > this.contentWidth) big = true;
+    if (this.fullWidth > this.contentWidth) 
+    	big = true;
 
     this.root.style.width =  this.fullWidth + 'px';
     //wrapper on the outside, cause putting wrapper between ul and it's children feels nonsemantic
@@ -68,7 +69,7 @@ class Carousel {
     }
   }
 
-  onHover() {
+  onHover() { console.log('hovering');
     for ( let el in this.$controls) {
       this.$controls[el].style.display = 'block';
     }
@@ -137,8 +138,3 @@ class Carousel {
       this.root.style.marginLeft = this.offset + 'px';
   }
 }
-
-window.onload = function() {
-  let elCarousel = document.getElementsByClassName('carousel')[0];
-  let objCarousel = new Carousel(elCarousel);
-};
